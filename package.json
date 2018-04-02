@@ -1,0 +1,30 @@
+{
+  "name": "aston-events",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Honno/events-site.git"
+  },
+  "author": "Matthew Barber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Honno/events-site/issues"
+  },
+  "homepage": "https://github.com/Honno/events-site#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "express": "^4.16.3",
+    "http-status": "^1.0.1",
+    "mocha": "^5.0.4",
+    "mongoose": "^5.0.12",
+    "superagent": "^3.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
+  }
+}
