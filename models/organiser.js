@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var OrganiserSchema = new Schema(
+var OrganiserSchema = new Schema({
     email: {
         type: String,
         unique: true,
         required: true
-    }
+    },
     password: {
         type: String,
         unique: true,
@@ -16,7 +16,7 @@ var OrganiserSchema = new Schema(
         type: String,
         required: true
     }
-);
+});
 
 var Organiser = mongoose.model('Organiser', OrganiserSchema);
 
