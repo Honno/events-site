@@ -15,7 +15,11 @@ var OrganiserSchema = new Schema({
     display_name: {
         type: String,
         required: true
-    }
+    },
+    events: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Events'
+    }]
 });
 
 var Organiser = mongoose.model('Organiser', OrganiserSchema);
