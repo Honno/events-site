@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var bcrypt = require('bcrypt');
+
 var OrganiserSchema = new Schema({
     email: {
         type: String,
@@ -9,7 +11,6 @@ var OrganiserSchema = new Schema({
     },
     password: {
         type: String,
-        unique: true,
         required: true
     },
     display_name: {
@@ -20,6 +21,17 @@ var OrganiserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Events'
     }]
+});
+
+OrganiserSchema.pre('save', function(next) {
+    var user = this;
+    bcrypt.hash(user.password, 10, function (err, hash) {
+        if (err) {
+            return next(err);
+        }
+        user.password = hash;
+        next();
+    });
 });
 
 var Organiser = mongoose.model('Organiser', OrganiserSchema);
