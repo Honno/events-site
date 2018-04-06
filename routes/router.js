@@ -24,6 +24,7 @@ router.post('/', function(req, res, next) {
             if (err) {
                 console.log(err);
             } else {
+                req.session.userId = organiser._id;
                 return res.redirect('/profile');
             }
         });

@@ -23,17 +23,38 @@ var OrganiserSchema = new Schema({
     }]
 });
 
+
 OrganiserSchema.pre('save', function(next) {
-    var user = this;
-    bcrypt.hash(user.password, 10, function (err, hash) {
+    var organiser = this;
+    bcrypt.hash(organiser.password, 10, function (err, hash) {
         if (err) {
             return next(err);
         }
-        user.password = hash;
+        organiser.password = hash;
         next();
     });
 });
 
 var Organiser = mongoose.model('Organiser', OrganiserSchema);
+
+OrganiserSchema.statics.auth = function (email, password, callback) {
+    Organiser.findOne({ email: email })
+        .exec(function (err, organiser) {
+            if (err) {
+                return callback(err);
+            } else if (!organiser) {
+                err = new Error('Organiser not found.');
+                err.status = 401;
+                return callback(err);
+            }
+            bcrypt.compare(password, organiser.password, function (err, result) {
+                if (result) {
+                    return callback(null, user);
+                } else {
+                    return callback();
+                }
+            });
+        });
+}
 
 module.exports = Organiser;
