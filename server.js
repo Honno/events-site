@@ -1,4 +1,37 @@
 var express = require('express');
+
+var session = require('express-session');
+var parse = require('body-parser');
+var routes = require('./routes');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost');
+
+exports.createServer = function () {
+    /* create server */
+    var server = express();
+
+    /* specify middleware */
+    // record user sessions
+    server.use(session({
+        secret: 'stoplooking',
+        resave: true,
+        saveUninitialized: false
+    }));
+
+    // allow data to be parsed
+    server.use(parse.json());
+    server.use(parse.urlencoded({ extended: false }));
+
+    // use defined routers
+    routes(server);
+
+    /* return server */
+    return server;
+}
+
+/*
+var express = require('express');
 var app = express();
 var session = require('express-session');
 var parse = require('body-parser');
@@ -32,3 +65,4 @@ app.use(function (err, req, res, next) {
 app.listen(3000, function() {
     console.log('listenin\' on 3000')
 });
+*/

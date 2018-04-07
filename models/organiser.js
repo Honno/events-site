@@ -23,6 +23,25 @@ var OrganiserSchema = new Schema({
     }]
 });
 
+OrganiserSchema.statics.auth = function (email, password, callback) {
+    Organiser.findOne({ email: email })
+        .exec(function (err, organiser) {
+            if (err) {
+                return callback(err);
+            } else if (!organiser) {
+                err = new Error('Organiser not found.');
+                err.status = 401;
+                return callback(err);
+            }
+            bcrypt.compare(password, organiser.password, function (err, result) {
+                if (result) {
+                    return callback(null, organiser);
+                } else {
+                    return callback();
+                }
+            });
+        });
+}
 
 OrganiserSchema.pre('save', function(next) {
     var organiser = this;
@@ -36,25 +55,4 @@ OrganiserSchema.pre('save', function(next) {
 });
 
 var Organiser = mongoose.model('Organiser', OrganiserSchema);
-
-OrganiserSchema.statics.auth = function (email, password, callback) {
-    Organiser.findOne({ email: email })
-        .exec(function (err, organiser) {
-            if (err) {
-                return callback(err);
-            } else if (!organiser) {
-                err = new Error('Organiser not found.');
-                err.status = 401;
-                return callback(err);
-            }
-            bcrypt.compare(password, organiser.password, function (err, result) {
-                if (result) {
-                    return callback(null, user);
-                } else {
-                    return callback();
-                }
-            });
-        });
-}
-
 module.exports = Organiser;
