@@ -1,14 +1,16 @@
 var router = require('express').Router();
 
+var status = require('http-status');
+
 var Organiser = require('../models/organiser');
 
 router.post('/create', function(req, res) {
-    console.log("User creation requested.");
+    console.log("Organiser creation requested");
 
     if(req.body.email &&
        req.body.password &&
        req.body.display_name) {
-        console.log("Necessary information given.");
+        console.log("Necessary information given");
 
         var data = {
             email: req.body.email,
@@ -18,16 +20,24 @@ router.post('/create', function(req, res) {
 
         Organiser.create(data, function(err, organiser) {
             if (err) {
-                console.log(err);
+                console.log(err.errmsg);
+
+                if (err.code === 11000) {
+                    res.status(status.CONFLICT)
+                        .send("Organiser with given email already exists");
+                } else {
+                    res.send(err.errmsg);
+                }
             } else {
                 console.log("Organiser successfully created");
+
                 req.session.userId = organiser._id;
-                res.send("woo");
+                res.send(organiser);
             }
         });
     } else {
-        res.status(400);
-        res.send("hmm");
+        res.status(status.BAD_REQUEST)
+            .send(status[400]);
     }
 });
 

@@ -1,7 +1,7 @@
-const mongoose = require('moongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var EventSchema = new Schema(
+var EventSchema = new Schema({
     event_name: {
         type: String,
         required: true
@@ -21,7 +21,7 @@ var EventSchema = new Schema(
     },
     img: {
         data: Buffer,
-        contentType: String,
+        type: String,
         required: true
     },
     likes: {
@@ -32,8 +32,8 @@ var EventSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: 'Organisers'
     },
-    organiser_name: String; // denormalised organiser name for quicker requests
-);
+    organiser_name: String // denormalised organiser name for quicker requests
+});
 
 var Event = mongoose.model('Event', EventSchema);
 module.exports = Event;
