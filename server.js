@@ -1,11 +1,14 @@
 var express = require('express');
 
 var session = require('express-session');
+var cookie_parser = require('cookie-parser');
 var parse = require('body-parser');
 var routes = require('./routes');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost');
+var mongo_uri = 'mongodb://localhost';
+mongoose.connect(mongo_uri);
+var store = require('connect-mongodb-session')(session);
 
 exports.createServer = function () {
     /* create server */
@@ -13,10 +16,19 @@ exports.createServer = function () {
 
     /* specify middleware */
     // record user sessions
+    server.use(cookie_parser());
     server.use(session({
         secret: 'stoplooking',
         resave: true,
-        saveUninitialized: false
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24
+        },
+        store: new store({
+            uri: mongo_uri,
+            databaseName: 'admin',
+            collection: 'sessions'
+        })
     }));
 
     // allow data to be parsed

@@ -21,7 +21,6 @@ router.post('/create', function(req, res) {
         Organiser.create(data, function(err, organiser) {
             if (err) {
                 console.log(err.errmsg);
-
                 if (err.code === 11000) {
                     res.status(status.CONFLICT)
                         .send("Organiser with given email already exists");
@@ -30,9 +29,8 @@ router.post('/create', function(req, res) {
                 }
             } else {
                 console.log("Organiser successfully created");
-
-                req.session.userId = organiser._id;
-                res.send(organiser);
+                req.session.user_id = organiser._id;
+                res.send(req.session);
             }
         });
     } else {
@@ -49,11 +47,26 @@ router.post('/login', function(req, res) {
                 res.status(401);
                 res.send("Wrong email or password");
             } else {
-                req.session.userId = organiser._id;
-                res.send("yay");
+                req.session.user_id = organiser._id;
+                res.send(req.session);
             }
-        })
+        });
     }
-})
+});
+
+router.get('/check', function(req, res) {
+    if (req.session.user_id) {
+        Organiser.findById(req.session.user_id, function(err, obj) {
+            if (err) {
+                res.status(status.INTERNAL_SERVER_ERROR);
+                res.send("User session recognized but not found in DB");
+            } else {
+                res.send(obj._doc.display_name);
+            }
+        });
+    } else {
+        res.send("You are not logged in");
+    }
+});
 
 module.exports = router;
