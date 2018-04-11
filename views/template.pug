@@ -8,9 +8,10 @@ html
       h1= "Aston Events"
 
       div(class='container-fluid')
-        h2= h2
-
         block content
+
+        if error
+          div(class='alert alert-danger')= error
 
       div(class='container-fluid')
         p= "I\'m a footer innit"

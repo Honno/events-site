@@ -22,13 +22,8 @@ router.post('/register', function(req, res) {
 
         Organiser.create(data, function(err, organiser) {
             if (err) {
-                console.log(err.errmsg);
-                if (err.code === 11000) {
-                    res.status(status.CONFLICT)
-                        .end();
-                } else {
-                    res.send(err.errmsg);
-                }
+                res.status(status.BAD_REQUEST);
+                res.render('register', { error: err });
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
@@ -37,38 +32,32 @@ router.post('/register', function(req, res) {
             }
         });
     } else {
-        res.status(status.BAD_REQUEST)
-            .end();
+        res.status(status.BAD_REQUEST);
+        res.render('register', { error: "Not all parameters provided." });
     }
+});
+
+router.get('/login', (req, res) => {
+    res.render('login');
 });
 
 router.post('/login', function(req, res) {
     if(req.body.email &&
        req.body.password) {
         Organiser.auth(req.body.email, req.body.password, function(err, organiser) {
-            if (err || !organiser) {
-                res.status(401);
-                res.send("Wrong email or password");
+            if (err) {
+                res.status(status.BAD_REQUEST);
+                res.render('login', { error: err });
             } else {
                 req.session.user_id = organiser._id;
+                req.session.name = organiser.display_name;
+
                 res.send(req.session);
             }
         });
-    }
-});
-
-router.get('/check', function(req, res) {
-    if (req.session.user_id) {
-        Organiser.findById(req.session.user_id, function(err, obj) {
-            if (err) {
-                res.status(status.INTERNAL_SERVER_ERROR);
-                res.end();
-            } else {
-                res.send(obj._doc.display_name);
-            }
-        });
     } else {
-        res.send("You are not logged in");
+        res.status(status.BAD_REQUEST);
+        res.render(login, { error: "Not all parameters provided." });
     }
 });
 
