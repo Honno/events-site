@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var EventSchema = new Schema({
     event_name: {
@@ -30,7 +30,8 @@ var EventSchema = new Schema({
     },
     organiser_id: {
         type: Schema.Types.ObjectId,
-        ref: 'Organisers'
+        ref: 'Organisers',
+        required: true
     },
     organiser_name: String // denormalised organiser name for quicker requests
 });

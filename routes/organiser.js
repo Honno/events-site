@@ -5,12 +5,9 @@ var status = require('http-status');
 var Organiser = require('../models/organiser');
 
 router.post('/create', function(req, res) {
-    console.log("Organiser creation requested");
-
     if(req.body.email &&
        req.body.password &&
        req.body.display_name) {
-        console.log("Necessary information given");
 
         var data = {
             email: req.body.email,
@@ -23,19 +20,19 @@ router.post('/create', function(req, res) {
                 console.log(err.errmsg);
                 if (err.code === 11000) {
                     res.status(status.CONFLICT)
-                        .send("Organiser with given email already exists");
+                        .end();
                 } else {
                     res.send(err.errmsg);
                 }
             } else {
-                console.log("Organiser successfully created");
                 req.session.user_id = organiser._id;
+                req.session.name = organiser.display_name;
                 res.send(req.session);
             }
         });
     } else {
         res.status(status.BAD_REQUEST)
-            .send(status[400]);
+            .end();
     }
 });
 
@@ -59,7 +56,7 @@ router.get('/check', function(req, res) {
         Organiser.findById(req.session.user_id, function(err, obj) {
             if (err) {
                 res.status(status.INTERNAL_SERVER_ERROR);
-                res.send("User session recognized but not found in DB");
+                res.end();
             } else {
                 res.send(obj._doc.display_name);
             }

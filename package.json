@@ -19,7 +19,9 @@
   "dependencies": {
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "busboy-body-parser": "^0.3.2",
     "connect-mongodb-session": "^2.0.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "http-status": "^1.0.1",
