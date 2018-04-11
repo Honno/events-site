@@ -1,0 +1,24 @@
+extends template.pug
+
+block content
+  form(action='/register' method='POST')
+    div(class='form-group')
+      label(for='email') Email address
+      input(type='email' class='form-control' name='email' id='email'
+      placeholder='Enter your email address')
+
+    div(class='form-group')
+      label(for='password') Password
+      input(type='password' class='form-control' name='password' id='password'
+      placeholder='Enter your desired password')
+      small(class='form-text text-muted')
+        | We store your passwords hashed; nifty huh?
+
+    div(class='form-group')
+      label(for='display_name') Display name
+      input(type='text' class='form-control' name='display_name' id='display_name'
+      placeholder='Enter your desired display name')
+      small(class='form-text text-muted')
+        | This will be the name that displays next to your events.
+
+    button(type='submit' class='btn btn-primary') Register

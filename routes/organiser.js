@@ -4,7 +4,12 @@ var status = require('http-status');
 
 var Organiser = require('../models/organiser');
 
-router.post('/create', function(req, res) {
+router.get('/register', (req, res) => {
+    res.render('register', { h2: 'Register' });
+});
+
+router.post('/register', function(req, res) {
+    console.log(req.body);
     if(req.body.email &&
        req.body.password &&
        req.body.display_name) {
@@ -27,7 +32,8 @@ router.post('/create', function(req, res) {
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
-                res.send(req.session);
+
+                res.redirect('/profile');
             }
         });
     } else {

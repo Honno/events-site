@@ -15,6 +15,10 @@ exports.createServer = function () {
     /* create server */
     var server = express();
 
+    /* view engine */
+    server.set('views', './views');
+    server.set('view engine', 'pug');
+
     /* specify middleware */
     // record user sessions
     server.use(cookie_parser());
