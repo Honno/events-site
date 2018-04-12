@@ -6,13 +6,23 @@ var busboy = require('busboy');
 var Organiser = require('../models/organiser.js');
 var Event = require('../models/event.js');
 
-router.get('/event', function (req, res) {
-    if (req.body.id) {
-        res.send(Event.findById(req.body.id));
-    } else if (req.body.name) {
-        res.send(Event.find({ event_name: req.body.name }));
-    } else {
-    }
+router.get('/event/:id', function (req, res) {
+    Event.findById(req.params.id, (err, event) => {
+        if (err) {
+            res.status(status.INTERNAL_SERVER_ERROR);
+            res.render('event', { error: err });
+        } else {
+            var data = {
+                event_name: event.event_name,
+                organiser_id: event.organiser_id,
+                organiser_name: event.organiser_name,
+                body: event.body,
+                img_mime: event.img_mime,
+                img_base64: event.img_data.toString('base64')
+            };
+            res.render('event', data);
+        }
+    });
 });
 
 router.get('/create', function (req, res) {
@@ -20,25 +30,22 @@ router.get('/create', function (req, res) {
 });
 
 router.post('/create', function (req, res) {
-    console.log(req.body);
-    console.log(req.file);
-    console.log(req.files);
-
-    if (req.session.user_id) {
+    var id = req.session.user_id;
+    if (id) {
         if(req.body.name &&
            req.body.body &&
            req.body.date &&
            req.body.time &&
            req.body.category &&
            req.files.img) {
-
             var data = {
                 event_name: req.body.name,
                 body: req.body.body,
                 date: new Date(req.body.date + 'T' + req.body.time),
                 category: req.body.category,
-                img: req.files.img.data,
-                organiser_id: req.session.user_id,
+                img_data: req.files.img.data,
+                img_mime: req.files.img.mimetype,
+                organiser_id: id,
                 organiser_name: req.session.name
             };
 
@@ -47,17 +54,30 @@ router.post('/create', function (req, res) {
                     res.status(status.INTERNAL_SERVER_ERROR);
                     res.render('create', { error: err });
                 } else {
-                    res.status(status.CREATED);
-                    res.redirect('event?id=' + event._id);
+                    var mini_event = {
+                        id: event._id,
+                        name: event.event_name
+                    };
+
+                    Organiser.findByIdAndUpdate(
+id, { $push: { events: mini_event}}, (err, organiser) => {
+    if (err) {
+        res.status(status.internal_server_error);
+        res.render('create', { error: err });
+    } else {
+        res.status(status.created);
+        res.redirect('event/' + event._id);
+    }
+});
                 }
             });
         } else {
-            res.status(status.BAD_REQUEST);
-            res.render('create', { error: "Not all information provided"});
+            res.status(status.bad_request);
+            res.render('create', { error: "not all information provided"});
         }
     } else {
-        res.status(status.UNAUTHORIZED);
-        res.render('create', { error: "You must be logged in"});
+        res.status(status.unauthorized);
+        res.render('create', { error: "you must be logged in"});
     }
 });
 

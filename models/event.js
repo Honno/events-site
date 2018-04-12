@@ -19,8 +19,11 @@ var EventSchema = new Schema({
         enum: ['sports', 'cultural', 'other'],
         required: true
     },
-    img: {
-        data: Buffer,
+    img_data: {
+        type: Buffer,
+        required: true
+    },
+    img_mime: {
         type: String,
         required: true
     },

@@ -12,5 +12,5 @@ block content
   if(events)
     ul(class='list-group')
       each event in events
-        a(href='/event?id=#{event.id}')
+        a(href='/event/' + event.id)
           li(class='list-group-item')= event.name

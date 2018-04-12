@@ -1,0 +1,13 @@
+extends template.pug
+
+block content
+  h2= event_name
+  h3
+    | Hosted by 
+    a(href='/profile/' + organiser_id)
+      | #{organiser_name}
+
+  p= body
+  p= img_mime
+  img(src='data:' + img_mime + ';base64,' + img_base64)
+

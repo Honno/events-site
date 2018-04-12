@@ -28,7 +28,7 @@ router.post('/register', function(req, res) {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.redirect('/profile?id=' + organiser._id);
+                res.redirect('/profile/' + organiser._id);
             }
         });
     } else {
@@ -52,12 +52,20 @@ router.post('/login', function(req, res) {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.redirect('/profile?id=' + organiser._id);
+                res.redirect('/profile/' + organiser._id);
             }
         });
     } else {
         res.status(status.BAD_REQUEST);
         res.render('login', { error: "Not all parameters provided." });
+    }
+});
+
+router.get('/profile', (req, res) => {
+    if(req.session.user_id) {
+        res.redirect('profile/' + req.session.user_id);
+    } else {
+        res.render('profile', { error: "You are not logged in"} );
     }
 });
 
