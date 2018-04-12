@@ -57,7 +57,23 @@ router.post('/login', function(req, res) {
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render(login, { error: "Not all parameters provided." });
+        res.render('login', { error: "Not all parameters provided." });
+    }
+});
+
+router.get('/profile', (res, req) => {
+    if(req.session.id) {
+        Organiser.findById(req.session.id, (errus, organiser) => {
+            if (err) {
+                res.status(status.INTERNAL_SERVER_ERROR);
+                res.render('profile', { error: err });
+            } else {
+                res.render('profile', { name: organiser.name, events: organiser.events });
+            }
+        });
+    } else {
+        res.status(status.BAD_REQUEST);
+        res.render('profile', { error: "You are not logged in." });
     }
 });
 

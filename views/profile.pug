@@ -1,0 +1,11 @@
+extends template.pug
+
+block content
+  h2= name
+
+  h3
+    | Your events
+  ul(class='list-group')
+    each event in events
+      a(href='/event?id=#{event.id}')
+        li(class='list-group-item')= event.name

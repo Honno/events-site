@@ -1,0 +1,40 @@
+extends template.pug
+
+block content
+  h2
+    | Create an event
+
+  form(action='/create' method='POST' enctype='multipart/form-data')
+    div(class='form-row')
+      div(class='form-group col-md-6')
+        label(for='name') Event name
+        input(type='text' class='form-control' name='name' id='email'
+        placeholder='Enter the name of your event')
+
+      div(class='form-group col-md-2')
+        label(for='category') Category
+        select(name='category' id='category')
+          option(selected) Choose...
+          option(value='sports') Sports
+          option(value='cultural') Cultural
+          option(value='other') Miscellaneous
+
+      div(class='form-group col-md-2')
+        label(for='date') Date
+        input(type='date' class='form-control' name='date' id='date')
+
+      div(class='form-group col-md-2')
+        label(for='time') Time
+        input(type='time' class='form-control' name='time' id='time')
+
+    div(class='form-group')
+      label(for='body') Event description
+      textarea(class='form-control' name='body' id='body' rows='8'
+      placeholder='Describe your event')
+
+    div(class='form-group')
+      label(for='img') Event image
+      input(type='file' class='form-control' name='img' id='img')
+
+    button(type='submit' class='btn btn-primary') Create event
+

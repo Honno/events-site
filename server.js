@@ -37,9 +37,9 @@ exports.createServer = function () {
     }));
 
     // allow data to be parsed
-    server.use(busboy_parse());
     server.use(parse.json());
     server.use(parse.urlencoded({ extended: false }));
+    server.use(busboy_parse());
 
     // use defined routers
     routes(server);

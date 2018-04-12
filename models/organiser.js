@@ -18,8 +18,8 @@ var OrganiserSchema = new Schema({
         required: true
     },
     events: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Events'
+        id: Schema.Types.ObjectId,
+        name: String
     }]
 });
 
