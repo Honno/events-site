@@ -28,7 +28,7 @@ router.post('/register', function(req, res) {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.redirect('/profile');
+                res.redirect('/profile?id=' + organiser._id);
             }
         });
     } else {
@@ -52,7 +52,7 @@ router.post('/login', function(req, res) {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.send(req.session);
+                res.redirect('/profile?id=' + organiser._id);
             }
         });
     } else {
@@ -61,14 +61,17 @@ router.post('/login', function(req, res) {
     }
 });
 
-router.get('/profile', (res, req) => {
-    if(req.session.id) {
-        Organiser.findById(req.session.id, (errus, organiser) => {
+router.get('/profile/:id', (req, res) => {
+    var id = req.params.id;
+    console.log(id);
+    if(id) {
+        Organiser.findById(id, (err, organiser) => {
             if (err) {
                 res.status(status.INTERNAL_SERVER_ERROR);
                 res.render('profile', { error: err });
             } else {
-                res.render('profile', { name: organiser.name, events: organiser.events });
+                console.log(organiser);
+                res.render('profile', { name: organiser.display_name, email: organiser.email, events: organiser.events });
             }
         });
     } else {
