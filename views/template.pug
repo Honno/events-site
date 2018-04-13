@@ -3,16 +3,16 @@ html
     title= title
     style
       include bootstrap.css
-      body
-    div(class='container')
-      h1= "Aston Events"
+      include style.css
 
-      div(class='container-fluid')
+  body
+    div(id='main' class='container')
+      include header.pug
+
+      div(id='content' class='container-fluid')
         block content
 
         if error
           div(class='alert alert-danger')= error
 
-      div(class='container-fluid')
-        p= "I\'m a footer innit"
-
+      include footer.pug

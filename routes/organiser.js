@@ -5,7 +5,7 @@ var status = require('http-status');
 var Organiser = require('../models/organiser');
 
 router.get('/register', (req, res) => {
-    res.render('register', { h2: 'Register' });
+    res.render('register', { session: req.session });
 });
 
 router.post('/register', function(req, res) {
@@ -23,22 +23,22 @@ router.post('/register', function(req, res) {
         Organiser.create(data, function(err, organiser) {
             if (err) {
                 res.status(status.BAD_REQUEST);
-                res.render('register', { error: err });
+                res.render('register', { error: err, session: req.session });
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.redirect('/profile/' + organiser._id);
+                res.redirect('/profile/id/' + organiser._id);
             }
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render('register', { error: "Not all parameters provided." });
+        res.render('register', { error: "Not all parameters provided.", session: req.session });
     }
 });
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', { session: req.session });
 });
 
 router.post('/login', function(req, res) {
@@ -47,39 +47,39 @@ router.post('/login', function(req, res) {
         Organiser.auth(req.body.email, req.body.password, function(err, organiser) {
             if (err) {
                 res.status(status.BAD_REQUEST);
-                res.render('login', { error: err });
+                res.render('login', { error: err, session: req.session });
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
 
-                res.redirect('/profile/' + organiser._id);
+                res.redirect('/profile/id/' + organiser._id);
             }
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render('login', { error: "Not all parameters provided." });
+        res.render('login', { error: "Not all parameters provided.", session: req.session });
     }
 });
 
 router.get('/', (req, res) => {
     if(req.session.user_id) {
-        res.redirect('profile/id' + req.session.user_id);
+        res.redirect('profile/id/' + req.session.user_id);
     } else {
-        res.render('profile', { error: "You are not logged in"} );
+        res.render('profile', { error: "You are not logged in" } );
     }
 });
 
-router.get('/profile/id/:id', (req, res) => {
+router.get('/id/:id', (req, res) => {
     var id = req.params.id;
     console.log(id);
     if(id) {
         Organiser.findById(id, (err, organiser) => {
             if (err) {
                 res.status(status.INTERNAL_SERVER_ERROR);
-                res.render('profile', { error: err });
+                res.render('profile', { error: err, session: req.session });
             } else {
                 console.log(organiser);
-                res.render('profile', { name: organiser.display_name, email: organiser.email, events: organiser.events });
+                res.render('profile', { name: organiser.display_name, email: organiser.email, events: organiser.events, session: req.session });
             }
         });
     } else {

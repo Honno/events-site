@@ -10,7 +10,7 @@ router.get('/id/:id', function (req, res) {
     Event.findById(req.params.id, (err, event) => {
         if (err) {
             res.status(status.INTERNAL_SERVER_ERROR);
-            res.render('event', { error: err });
+            res.render('event', { error: err, session: req.session });
         } else {
             var data = {
                 event_name: event.event_name,
@@ -37,7 +37,7 @@ router.get('/id/:id', function (req, res) {
 
 
 router.get('/create', function (req, res) {
-    res.render('create');
+    res.render('create', { session: req.session });
 });
 
 router.post('/create', function (req, res) {
@@ -65,7 +65,7 @@ router.post('/create', function (req, res) {
             Event.create(data, function (err, event) {
                 if (err) {
                     res.status(status.INTERNAL_SERVER_ERROR);
-                    res.render('create', { error: err });
+                    res.render('create', { error: err, session: req.session });
                 } else {
                     var mini_event = {
                         id: event._id,
@@ -76,7 +76,7 @@ router.post('/create', function (req, res) {
 id, { $push: { events: mini_event}}, (err, organiser) => {
     if (err) {
         res.status(status.internal_server_error);
-        res.render('create', { error: err });
+        res.render('create', { error: err, session: req.session });
     } else {
         res.status(status.created);
         res.redirect('event/' + event._id);
@@ -86,21 +86,21 @@ id, { $push: { events: mini_event}}, (err, organiser) => {
             });
         } else {
             res.status(status.bad_request);
-            res.render('create', { error: "not all information provided"});
+            res.render('create', { error: "not all information provided", session: req.session });
         }
     } else {
         res.status(status.unauthorized);
-        res.render('create', { error: "you must be logged in"});
+        res.render('create', { error: "you must be logged in", session: req.session });
     }
 });
 
 router.get('/update/:id', (req, res) => {
     Event.findById(req.params.id, (err, event) => {
         if (err) {
-            res.render('update', { error: err });
+            res.render('update', { error: err, session: req.session });
         } else {
             if (req.session.user_id.toString() != event.organiser_id) {
-                res.render('update', { error: "You are not permitted to edit this event" });
+                res.render('update', { error: "You are not permitted to edit this event", session: req.session });
             } else {
                 var date = event.date;
 
@@ -121,7 +121,7 @@ router.get('/update/:id', (req, res) => {
                     img_data: event.img_data
                 };
 
-                res.render('update', { event: data });
+                res.render('update', { event: data, session: req.session });
             }
         }
     });
@@ -129,7 +129,7 @@ router.get('/update/:id', (req, res) => {
 
 router.post('/update', (req, res) => {
     if(req.session.user_id != req.body.organiser_id) {
-        res.render('update', { error: "You are not permitted to update this event" });
+        res.render('update', { error: "You are not permitted to update this event", session: req.session });
     } else {
         var data = {
             event_name: req.body.name,

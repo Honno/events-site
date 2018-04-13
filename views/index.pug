@@ -5,6 +5,8 @@ block content
     | Events
 
   if(events)
-    each event in events
-      a(href='/event/id/' + event.event_id)
-        p= event.event_name
+    div(class='list-group')
+      each event in events
+        a(href='/events/id/' + event.event_id
+        class='list ')
+          p= event.event_name

@@ -1,0 +1,20 @@
+div(class='row align-items-end')
+  div(class='col-md-4')
+
+  div(class='col-md-4')
+    h1= "Aston Events"
+
+  div(class='col-md-4' style='color: #ffffff')
+    if(session)
+      p
+      | You are logged in as 
+      a(href='/profile/id/' + session.user_id)
+        = session.name
+
+    else
+      p
+        a(href='/profile/login' class='badge badge-light'
+        style='margin-right: 10px;')
+          | Login
+        a(href='/profile/register' class='badge badge-light')
+          | Register
