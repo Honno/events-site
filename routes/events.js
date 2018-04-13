@@ -41,9 +41,11 @@ router.post('/create', function (req, res) {
             var data = {
                 event_name: req.body.name,
                 body: req.body.body,
-                date: new Date(req.body.date + 'T' + req.body.time),
+                date: new Date(req.body.date +
+                               'T' +
+                               req.body.time),
                 category: req.body.category,
-                img_data: req.files.img.data,
+                img_data: req.files.img.data.toString('base64'),
                 img_mime: req.files.img.mimetype,
                 organiser_id: id,
                 organiser_name: req.session.name

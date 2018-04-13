@@ -2,4 +2,9 @@ extends template.pug
 
 block content
   h2
-    | yoyoyo
+    | Events
+
+  if(events)
+    each event in events
+      a(href='/event/' + event.event_id)
+        p= event.event_name

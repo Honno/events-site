@@ -20,7 +20,7 @@ var EventSchema = new Schema({
         required: true
     },
     img_data: {
-        type: Buffer,
+        type: String,
         required: true
     },
     img_mime: {
