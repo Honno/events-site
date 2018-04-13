@@ -6,7 +6,7 @@ var busboy = require('busboy');
 var Organiser = require('../models/organiser.js');
 var Event = require('../models/event.js');
 
-router.get('/event/:id', function (req, res) {
+router.get('/id/:id', function (req, res) {
     Event.findById(req.params.id, (err, event) => {
         if (err) {
             res.status(status.INTERNAL_SERVER_ERROR);

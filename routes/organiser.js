@@ -61,15 +61,15 @@ router.post('/login', function(req, res) {
     }
 });
 
-router.get('/profile', (req, res) => {
+router.get('/', (req, res) => {
     if(req.session.user_id) {
-        res.redirect('profile/' + req.session.user_id);
+        res.redirect('profile/id' + req.session.user_id);
     } else {
         res.render('profile', { error: "You are not logged in"} );
     }
 });
 
-router.get('/profile/:id', (req, res) => {
+router.get('/profile/id/:id', (req, res) => {
     var id = req.params.id;
     console.log(id);
     if(id) {
