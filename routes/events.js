@@ -14,16 +14,27 @@ router.get('/event/:id', function (req, res) {
         } else {
             var data = {
                 event_name: event.event_name,
-                organiser_id: event.organiser_id,
+                event_id: event._id,
+                organiser_id: event.organiser_id.toString(),
                 organiser_name: event.organiser_name,
                 body: event.body,
                 img_mime: event.img_mime,
                 img_base64: event.img_data.toString('base64')
             };
-            res.render('event', data);
+
+            var session;
+            if(req.session.user_id == data.organiser_id) {
+                session = req.session;
+            } else {
+                session = null;
+            }
+
+            res.render('event', { event: data, session: session });
         }
     });
 });
+
+
 
 router.get('/create', function (req, res) {
     res.render('create');
@@ -80,6 +91,58 @@ id, { $push: { events: mini_event}}, (err, organiser) => {
     } else {
         res.status(status.unauthorized);
         res.render('create', { error: "you must be logged in"});
+    }
+});
+
+router.get('/update/:id', (req, res) => {
+    Event.findById(req.params.id, (err, event) => {
+        if (err) {
+            res.render('update', { error: err });
+        } else {
+            if (req.session.user_id.toString() != event.organiser_id) {
+                res.render('update', { error: "You are not permitted to edit this event" });
+            } else {
+                var date = event.date;
+
+                var data = {
+                    event_name: event.event_name,
+                    event_id: event._id,
+                    organiser_id: event.organiser_id,
+                    organiser_name: event.organiser_name,
+                    body: event.body,
+                    date: date.getYear() + '/' +
+                        date.getMonth() + '/' +
+                        date.getDay(),
+                    time: date.getHours() +
+                        ':' +
+                        date.getMinutes(),
+                    category: event.category,
+                    img_mime: event.img_mime,
+                    img_data: event.img_data
+                };
+
+                res.render('update', { event: data });
+            }
+        }
+    });
+});
+
+router.post('/update', (req, res) => {
+    if(req.session.user_id != req.body.organiser_id) {
+        res.render('update', { error: "You are not permitted to update this event" });
+    } else {
+        var data = {
+            event_name: req.body.name,
+            body: req.body.body,
+            date: new Date(req.body.date +
+                           'T' +
+                           req.body.time),
+            category: req.body.category,
+            img_data: req.files.img.data.toString('base64'),
+            img_mime: req.files.img.mimetype,
+            organiser_id: id,
+            organiser_name: req.session.name
+        };
     }
 });
 

@@ -1,13 +1,16 @@
 extends template.pug
 
 block content
-  h2= event_name
+  h2= event.event_name
   h3
     | Hosted by 
-    a(href='/profile/' + organiser_id)
-      | #{organiser_name}
+    a(href='/profile/' + event.organiser_id)
+      | #{event.organiser_name}
 
-  p= body
-  p= img_mime
-  img(src='data:' + img_mime + ';base64,' + img_base64)
+  p= event.body
 
+  img(src='data:' + event.img_mime + ';base64,' + event.img_base64)
+
+  if(session)
+    form(action='/update/'+event.event_id method='GET')
+      button(type='submit' class='btn btn-secondary') Edit event

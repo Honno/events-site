@@ -1,0 +1,40 @@
+extends template.pug
+
+block content
+  h2
+    | Update event
+
+  if(event)
+    form(action='/update' method='POST' enctype='multipart/form-data')
+      div(class='form-row')
+        div(class='form-group col-md-6')
+          label(for='name') Event name
+          input(type='text' class='form-control' name='name' id='email'
+          value= event.event_name)
+
+        div(class='form-group col-md-2')
+          label(for='category') Category
+          select(name='category' class='form-control' id='category')
+            option(selected)= event.category
+            option(value='sports') Sports
+            option(value='cultural') Cultural
+            option(value='other') Miscellaneous
+
+        div(class='form-group col-md-2')
+          label(for='date') Date
+          input(type='date' class='form-control' name='date' id='date'
+          value= event.date)
+
+        div(class='form-group col-md-2')
+          label(for='time') Time
+          input(type='time' class='form-control' name='time' id='time'
+          value= event.time)
+
+      div(class='form-group')
+        label(for='body') Event description
+        textarea(class='form-control' name='body' id='body' rows='8')
+          = event.body
+
+      input(type='hidden' name='organiser_id' value= event.organiser_id)
+
+      button(type='submit' class='btn btn-primary') Update event
