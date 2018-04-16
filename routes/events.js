@@ -110,9 +110,7 @@ router.get('/update/:id', (req, res) => {
                     organiser_id: event.organiser_id,
                     organiser_name: event.organiser_name,
                     body: event.body,
-                    date: date.getYear() + '/' +
-                        date.getMonth() + '/' +
-                        date.getDay(),
+                    date: date.toISOString().substring(0, 10),
                     time: date.getHours() +
                         ':' +
                         date.getMinutes(),
@@ -131,18 +129,42 @@ router.post('/update', (req, res) => {
     if(req.session.user_id != req.body.organiser_id) {
         res.render('update', { error: "You are not permitted to update this event", session: req.session });
     } else {
-        var data = {
-            event_name: req.body.name,
-            body: req.body.body,
-            date: new Date(req.body.date +
-                           'T' +
-                           req.body.time),
-            category: req.body.category,
-            img_data: req.files.img.data.toString('base64'),
-            img_mime: req.files.img.mimetype,
-            organiser_id: id,
-            organiser_name: req.session.name
-        };
+        if ('img' in req.files) {
+            Event.update({ _id: req.body.event_id },
+                         { img_data: req.files.img.data.toString('base64'),
+                           img_mime: req.files.img.mimetype },
+                         (err, raw) => {
+                             if (err) {
+                                 res.render('update', { error: err, session: req.session });
+                             } else {
+                                 res.redirect('/events/id/' + req.body.event_id);
+                             }
+                         });
+        } else if (req.body.name &&
+                   req.body.body &&
+                   req.body.date &&
+                   req.body.time &&
+                   req.body.category)
+        {
+            var data = {
+                event_name: req.body.name,
+                body: req.body.body,
+                date: new Date(req.body.date +
+                               'T' +
+                               req.body.time),
+                category: req.body.category
+            };
+
+            Event.update({ _id: req.body.event_id },
+                         data,
+                         (err, raw) => {
+                             if (err) {
+                                 res.render('update', { error: err, session: req.session });
+                             } else {
+                                 res.redirect('/events/id/' + req.body.event_id);
+                             }
+                         })
+        }
     }
 });
 

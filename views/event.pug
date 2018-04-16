@@ -12,5 +12,6 @@ block content
   img(src='data:' + event.img_mime + ';base64,' + event.img_base64)
 
   if(session)
-    form(action='/update/'+event.event_id method='GET')
-      button(type='submit' class='btn btn-secondary') Edit event
+    p
+      a(href='/events/update/' + event.event_id)
+        button(type='submit' class='btn btn-secondary') Edit event
