@@ -79,7 +79,7 @@ id, { $push: { events: mini_event}}, (err, organiser) => {
         res.render('create', { error: err, session: req.session });
     } else {
         res.status(status.created);
-        res.redirect('event/' + event._id);
+        res.redirect('/events/id/' + event._id);
     }
 });
                 }
@@ -163,7 +163,7 @@ router.post('/update', (req, res) => {
                              } else {
                                  res.redirect('/events/id/' + req.body.event_id);
                              }
-                         })
+                         });
         }
     }
 });

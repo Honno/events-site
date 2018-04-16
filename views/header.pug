@@ -10,6 +10,9 @@ div(class='row align-items-end')
       | You are logged in as 
       a(href='/profile/id/' + session.user_id)
         = session.name
+      a(href='/profile/logout' class='badge badge-light'
+      style='margin-left: 10px; margin-right: 10px;')
+      | Logout
 
     else
       p

@@ -27,10 +27,8 @@ router.get('/', (req, res) => {
 
     console.log(events);
     cursor.on('close', () => {
-        res.render('index', { events: events });
+        res.render('index', { events: events, session: req.session });
     });
 });
-
-
 
 module.exports = router;

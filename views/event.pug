@@ -7,9 +7,10 @@ block content
     a(href='/profile/id/' + event.organiser_id)
       | #{event.organiser_name}
 
-  p= event.body
+  p(style='white-space: pre-wrap')= event.body
 
-  img(src='data:' + event.img_mime + ';base64,' + event.img_base64)
+  img(class='img-fluid'
+  src='data:' + event.img_mime + ';base64,' + event.img_base64)
 
   if(session)
     p
