@@ -1,4 +1,4 @@
-extends template.pug
+extends templates/template.pug
 
 block content
   h2
@@ -7,6 +7,6 @@ block content
   if(events)
     div(class='list-group')
       each event in events
-        a(href='/events/id/' + event.event_id
+        a(href='/events/id/' + event._id
         class='list')
           p= event.event_name

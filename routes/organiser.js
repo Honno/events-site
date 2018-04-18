@@ -23,7 +23,10 @@ router.post('/register', function(req, res) {
         Organiser.create(data, function(err, organiser) {
             if (err) {
                 res.status(status.BAD_REQUEST);
-                res.render('register', { error: err, session: req.session });
+                res.render('register', {
+                    error: err,
+                    session: req.session
+                });
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
@@ -33,7 +36,10 @@ router.post('/register', function(req, res) {
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render('register', { error: "Not all parameters provided.", session: req.session });
+        res.render('register', {
+            error: "Not all parameters provided.",
+            session: req.session
+        });
     }
 });
 
@@ -47,7 +53,10 @@ router.post('/login', function(req, res) {
         Organiser.auth(req.body.email, req.body.password, function(err, organiser) {
             if (err) {
                 res.status(status.BAD_REQUEST);
-                res.render('login', { error: err, session: req.session });
+                res.render('login', {
+                    error: err,
+                    session: req.session
+                });
             } else {
                 req.session.user_id = organiser._id;
                 req.session.name = organiser.display_name;
@@ -57,9 +66,10 @@ router.post('/login', function(req, res) {
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render('login',
-                   { error: "Not all parameters provided.",
-                     session: req.session });
+        res.render('login', {
+                       error: "Not all parameters provided.",
+                       session: req.session
+                   });
     }
 });
 
@@ -87,7 +97,12 @@ router.get('/id/:id', (req, res) => {
                 res.render('profile', { error: err, session: req.session });
             } else {
                 console.log(organiser);
-                res.render('profile', { name: organiser.display_name, email: organiser.email, events: organiser.events, session: req.session });
+                res.render('profile', {
+                    name: organiser.display_name,
+                    email: organiser.email,
+                    events: organiser.events,
+                    session: req.session
+                });
             }
         });
     } else {
