@@ -11,30 +11,19 @@ router.get('/id/:id', function (req, res) {
         if (err) {
             res.status(status.INTERNAL_SERVER_ERROR);
             res.render('event', { error: err, session: req.session });
-        } else {
-            var data = {
-                event_name: event.event_name,
-                event_id: event._id,
-                organiser_id: event.organiser_id.toString(),
-                organiser_name: event.organiser_name,
-                body: event.body,
-                img_mime: event.img_mime,
-                img_base64: event.img_data.toString('base64')
-            };
 
+        } else {
             var session;
-            if(req.session.user_id == data.organiser_id) {
+            if(req.session.user_id == event.organiser_id) {
                 session = req.session;
             } else {
                 session = null;
             }
 
-            res.render('event', { event: data, session: session });
+            res.render('event', { event: event, session: req.session });
         }
     });
 });
-
-
 
 router.get('/create', function (req, res) {
     res.render('create', { session: req.session });

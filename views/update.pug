@@ -43,7 +43,7 @@ block content
     form(action='/events/update' method='POST' enctype='multipart/form-data')
       div(class='form-group')
         label(for='img') Event image
-        input(type='file' class='form-control' name='img' id='img')
+        input(type='file' accept='image/*' class='form-control' name='img' id='img')
 
       input(type='hidden' name='organiser_id' value= event.organiser_id)
       input(type='hidden' name='event_id' value= event.event_id)

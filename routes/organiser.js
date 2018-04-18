@@ -57,8 +57,16 @@ router.post('/login', function(req, res) {
         });
     } else {
         res.status(status.BAD_REQUEST);
-        res.render('login', { error: "Not all parameters provided.", session: req.session });
+        res.render('login',
+                   { error: "Not all parameters provided.",
+                     session: req.session });
     }
+});
+
+router.get('/logout', (req, res) => {
+    req.session.user_id = null;
+    req.session.name = null;
+    res.redirect('/');
 });
 
 router.get('/', (req, res) => {

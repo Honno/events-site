@@ -10,7 +10,7 @@ block content
   p(style='white-space: pre-wrap')= event.body
 
   img(class='img-fluid'
-  src='data:' + event.img_mime + ';base64,' + event.img_base64)
+  src='data:' + event.img_mime + ';base64,' + event.img_data)
 
   if(session)
     p
