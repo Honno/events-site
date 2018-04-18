@@ -40,6 +40,7 @@ router.post('/create', function (req, res) {
     if (id) {
         if(req.body.name &&
            req.body.body &&
+           req.body.location &&
            req.body.date &&
            req.body.time &&
            req.body.category &&
@@ -48,6 +49,7 @@ router.post('/create', function (req, res) {
             var data = {
                 event_name: req.body.name,
                 body: req.body.body,
+                location: req.body.location,
                 date: new Date(req.body.date +
                                'T' +
                                req.body.time),
@@ -124,6 +126,7 @@ router.get('/update/:id', (req, res) => {
                     organiser_id: event.organiser_id,
                     organiser_name: event.organiser_name,
                     body: event.body,
+                    location: event.location,
                     date: date.toISOString().substring(0, 10),
                     time: date.getHours() + ':' + date.getMinutes(),
                     category: event.category,
@@ -164,6 +167,7 @@ router.post('/update', (req, res) => {
 
         } else if (req.body.name &&
                    req.body.body &&
+                   req.body.location &&
                    req.body.date &&
                    req.body.time &&
                    req.body.category)
@@ -171,6 +175,7 @@ router.post('/update', (req, res) => {
             var data = {
                 event_name: req.body.name,
                 body: req.body.body,
+                location: req.body.location,
                 date: new Date(req.body.date +
                                'T' +
                                req.body.time),

@@ -1,18 +1,35 @@
 extends templates/template.pug
 
 block content
-  h2= event.event_name
-  h3
-    | Hosted by 
-    a(href='/profile/id/' + event.organiser_id)
-      | #{event.organiser_name}
-
-  p(style='white-space: pre-wrap')= event.body
-
   img(class='img-fluid'
+  style='border-radius: 5px 5px 0 0'
   src='data:' + event.img_mime + ';base64,' + event.img_data)
 
-  if(session)
+  h2= event.event_name
+
+  div(class='row')
+    div(class='col-md-8')
+      p(style='white-space: pre-wrap')= event.body
+
+    div(class='col-md-4')
+      table(class='table')
+        tr
+          td= 'Location'
+          td= event.location
+        tr
+          td= 'Date'
+          td #{moment(event.date).format("Do MMM 'YY (dddd)")}
+        tr
+          td= 'Time'
+          td #{moment(event.date).format("h.mm a")}
+        tr
+          td= 'Organiser'
+          td
+            a(href='/profile/id/' + event.organiser_id)
+              | #{event.organiser_name}
+
+  - var id = session.user_id.toString()
+  if id == event.organiser_id
     p
-      a(href='/events/update/' + event.event_id)
+      a(href='/events/update/' + event._id)
         button(type='submit' class='btn btn-secondary') Edit event

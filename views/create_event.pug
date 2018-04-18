@@ -6,10 +6,15 @@ block content
 
   form(action='/events/create' method='POST' enctype='multipart/form-data')
     div(class='form-row')
-      div(class='form-group col-md-6')
+      div(class='form-group col-md-4')
         label(for='name') Event name
         input(type='text' class='form-control' name='name' id='email'
         placeholder='Enter the name of your event')
+
+      div(class='form-group col-md-2')
+        label(for='location') Location
+        input(type='text' class='form-control' name='location' id='location'
+        placeholder='Enter your event\'s location')
 
       div(class='form-group col-md-2')
         label(for='category') Category

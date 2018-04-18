@@ -7,10 +7,15 @@ block content
   if(event)
     form(action='/events/update' method='POST' enctype='multipart/form-data')
       div(class='form-row')
-        div(class='form-group col-md-6')
+        div(class='form-group col-md-4')
           label(for='name') Event name
           input(type='text' class='form-control' name='name' id='email'
           value= event.event_name)
+
+        div(class='form-group col-md-2')
+          label(for='location') Location
+          input(type='text' class='form-control' name='location' id='location'
+          value = event.location)
 
         div(class='form-group col-md-2')
           label(for='category') Category

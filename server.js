@@ -4,6 +4,7 @@ var session = require('express-session');
 var cookie_parser = require('cookie-parser');
 var parse = require('body-parser');
 var busboy_parse = require('busboy-body-parser');
+var moment = require('moment');
 var routes = require('./routes');
 
 var mongoose = require('mongoose');
@@ -15,7 +16,7 @@ exports.createServer = function () {
     /* create server */
     var server = express();
 
-    /* view engine */
+    /* specify view engine */
     server.set('views', './views');
     server.set('view engine', 'pug');
 
@@ -41,8 +42,11 @@ exports.createServer = function () {
     server.use(parse.urlencoded({ extended: false }));
     server.use(busboy_parse());
 
-    // use defined routers
+    // attatch defined routers
     routes(server);
+
+    // add momentjs functionality
+    server.locals.moment = moment;
 
     /* return server */
     return server;
