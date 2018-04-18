@@ -161,6 +161,7 @@ router.post('/update', (req, res) => {
                                  res.redirect('/events/id/' + req.body.event_id);
                              }
                          });
+
         } else if (req.body.name &&
                    req.body.body &&
                    req.body.date &&

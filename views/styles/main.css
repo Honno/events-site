@@ -11,13 +11,6 @@ div#main > p {
     text-align: right;
 }
 
-h1 {
-    color: #ffffff;
-    text-align: center;
-    font-weight: bold;
-    font-size: 48px;
-}
-
 div#content {
     background-color: #ffffff;
     border-radius: 10px;
@@ -27,5 +20,5 @@ div#content {
 div#footer {
     text-align: center;
     margin-top: 5px;
-    color: #ffffff;
+    margin-bottom: 50px;
 }

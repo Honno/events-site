@@ -1,18 +1,23 @@
 div(class='row align-items-end')
   div(class='col-md-4')
 
-  div(class='col-md-4')
-    h1= "Aston Events"
+  div(class='col-md-4 text-center')
+    h1
+      a(href='/' class='text-light')
+        | Aston Events
 
-  div(class='col-md-4' style='color: #ffffff')
+  div(class='col-md-4 text-right float-right' style='color: #ffffff')
     if(session && session.user_id && session.name)
       p
-      | You are logged in as 
-      a(href='/profile/id/' + session.user_id)
-        = session.name
-      a(href='/profile/logout' class='badge badge-light'
-      style='margin-left: 10px; margin-right: 10px;')
-        | Logout
+        | You are logged in as 
+        a(href='/profile/id/' + session.user_id class='text-light')
+          = session.name
+        a(href='/events/create' class='badge badge-light'
+        style='margin-left: 10px')
+          | Create 
+        a(href='/profile/logout' class='badge badge-light'
+        style='margin-left: 10px')
+          | Logout
 
     else
       p
