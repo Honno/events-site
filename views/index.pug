@@ -1,8 +1,6 @@
 extends templates/template.pug
 
 block content
-  h2
-    | Events
 
   if(events)
     div(class='list-group')
@@ -10,3 +8,7 @@ block content
         a(href='/events/id/' + event._id
         class='list')
           p= event.event_name
+
+  else
+    p
+      | No events to show

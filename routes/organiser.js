@@ -92,9 +92,9 @@ router.get('/id/:id', (req, res) => {
     console.log(id);
     if(id) {
         Organiser.findById(id, (err, organiser) => {
-            if (err) {
+            if (err || !organiser) {
                 res.status(status.INTERNAL_SERVER_ERROR);
-                res.render('profile', { error: err, session: req.session });
+                res.render('error', { error: err, session: req.session });
             } else {
                 console.log(organiser);
                 res.render('profile', {

@@ -2,7 +2,7 @@ extends templates/template.pug
 
 block content
   img(class='img-fluid'
-  style='border-radius: 5px 5px 0 0'
+  style='border-radius: 5px 5px 0 0; width: 100%'
   src='data:' + event.img_mime + ';base64,' + event.img_data)
 
   h2= event.event_name

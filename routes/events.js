@@ -8,17 +8,21 @@ var Event = require('../models/event.js');
 
 router.get('/id/:id', function (req, res) {
     Event.findById(req.params.id, (err, event) => {
-        if (err) {
+        if (err || !event) {
             res.status(status.INTERNAL_SERVER_ERROR);
-            res.render('event', {
+            res.render('error', {
                 error: err,
                 session: req.session
             });
 
         } else {
             var session;
-            if(req.session.user_id == event.organiser_id) {
-                session = req.session;
+            if('user_id' in req.session) {
+                if(req.session.user_id == event.organiser_id) {
+                    session = req.session;
+                } else {
+                    session = null;
+                }
             } else {
                 session = null;
             }
