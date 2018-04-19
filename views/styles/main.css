@@ -27,3 +27,10 @@ tr td:nth-child(2) {
    text-align: right;
 }
 
+div#event {
+    background-position: 50% 50%;
+    border-radius: 5px 5px 0 0;
+    width: 100%;
+    height: 256px;
+    position: relative;
+}

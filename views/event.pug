@@ -1,11 +1,11 @@
 extends templates/template.pug
 
 block content
-  img(class='img-fluid'
-  style='border-radius: 5px 5px 0 0; width: 100%'
-  src='data:' + event.img_mime + ';base64,' + event.img_data)
-
-  h2= event.event_name
+  div(id='event' class='container-fluid'
+  style='background-image: linear-gradient(rgba(0,0,0,0), black),url("data:' + event.img_mime + ';base64,' + event.img_data + '")')
+    div(class='fixed-bottom')
+        h2(class='text-light')
+          = event.event_name
 
   div(class='row')
     div(class='col-md-8')
@@ -30,6 +30,6 @@ block content
 
   - var id = session.user_id.toString()
   if id == event.organiser_id
-    p
+    p(class='text-center')
       a(href='/events/update/' + event._id)
         button(type='submit' class='btn btn-secondary') Edit event
