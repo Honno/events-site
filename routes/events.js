@@ -225,6 +225,7 @@ router.post('/like', (req, res) => {
                                });
     }
 });
+
 router.post('/unlike', (req, res) => {
     if ('likes' in req.session && !(req.session.likes.includes(req.body.event_id) )) {
         res.render('error', { error: "You have already unliked this event" });
@@ -247,6 +248,54 @@ router.post('/unlike', (req, res) => {
                                        res.redirect('/events/id/' + req.body.event_id);
                                    }
                                });
+    }
+});
+
+router.post('/delete', (req, res) => {
+    if (req.body.event_id) {
+        Event.findById(req.body.event_id.toString(), (err, event) => {
+            if (err | !event) {
+                res.render('error', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                if (req.session.user_id.toString() == event.organiser_id) {
+                    Event.findByIdAndRemove(req.body.event_id,
+                                            (err, event) => {
+                                                if (err) {
+                                                    res.render('error', {
+                                                        error: err,
+                                                        session: req.session
+                                                    });
+                                                } else {
+                                                    Organiser.findOneAndUpdate({ _id: event.organiser_id },
+                                                                               { $pull: { events: { id: req.body.event_id } } },
+                                                                               (err, organiser) => {
+                                                                                   if (err) {
+                                                                                       res.render('error', {
+                                                                                           error: err,
+                                                                                           session: req.session
+                                                                                       });
+                                                                                   } else {
+                                                                                       res.render('index', { session: req.session });
+                                                                                   }
+                                                                               });
+                                                }
+                                            });
+                } else {
+                    res.render('error', {
+                        error: "Not authorized to delete event",
+                        session: req.session
+                    });
+                }
+            }
+        });
+    } else {
+        res.render('error', {
+            error: "No event id provided",
+            session: req.session
+        });
     }
 });
 

@@ -4,6 +4,9 @@ block content
   h2
     | Update event
 
+  a(href='/events/id/' + event.event_id)
+    | Go back to event page
+
   if(event)
     form(action='/events/update' method='POST' enctype='multipart/form-data')
       div(class='form-row')
@@ -55,5 +58,8 @@ block content
 
       button(type='submit' class='btn btn-primary') Update image
 
-  a(href='/events/id/' + event.event_id)
-    | Go back to event page
+    form(action='/events/delete' method='POST')
+      input(type='hidden' name='organiser_id' value= event.organiser_id)
+      input(type='hidden' name='event_id' value= event.event_id)
+
+      button(type='submit' class='btn btn-danger') Delete event
