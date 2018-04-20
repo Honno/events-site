@@ -134,8 +134,6 @@ router.get('/update/:id', (req, res) => {
                     date: date.toISOString().substring(0, 10),
                     time: date.getHours() + ':' + date.getMinutes(),
                     category: event.category,
-                    img_mime: event.img_mime,
-                    img_data: event.img_data
                 };
 
                 res.render('update_event', {
@@ -199,6 +197,56 @@ router.post('/update', (req, res) => {
                              }
                          });
         }
+    }
+});
+
+router.post('/like', (req, res) => {
+    if ('likes' in req.session && req.session.likes.includes(req.body.event_id)) {
+        res.render('error', { error: "You have already liked this event" });
+
+    } else {
+        if (!('likes' in req.session)) {
+            req.session.likes = [];
+        }
+        req.session.likes.push(req.body.event_id);
+
+        Event.findOneAndUpdate({ _id: req.body.event_id },
+                               { $inc: { likes: 1 } },
+                               (err, event) => {
+                                   if (err) {
+                                       res.render('error', {
+                                           error: err,
+                                           session: req.session
+                                       });
+
+                                   } else {
+                                       res.redirect('/events/id/' + req.body.event_id);
+                                   }
+                               });
+    }
+});
+router.post('/unlike', (req, res) => {
+    if ('likes' in req.session && !(req.session.likes.includes(req.body.event_id) )) {
+        res.render('error', { error: "You have already unliked this event" });
+
+    } else {
+        if ('likes' in req.session) {
+            req.session.likes.splice(req.session.likes.indexOf(req.body.event_id), 1);
+        }
+
+        Event.findOneAndUpdate({ _id: req.body.event_id },
+                               { $inc: { likes: -1 } },
+                               (err, event) => {
+                                   if (err) {
+                                       res.render('error', {
+                                           error: err,
+                                           session: req.session
+                                       });
+
+                                   } else {
+                                       res.redirect('/events/id/' + req.body.event_id);
+                                   }
+                               });
     }
 });
 

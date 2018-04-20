@@ -3,7 +3,7 @@ extends templates/template.pug
 block content
   div(id='event' class='container-fluid'
   style='background-image: linear-gradient(rgba(0,0,0,0), black),url("data:' + event.img_mime + ';base64,' + event.img_data + '")')
-    div(style='bottom:0;position:absolute')
+    div(style='bottom:5px; position:absolute')
         h2(class='text-light')
           = event.event_name
 
@@ -27,9 +27,25 @@ block content
           td
             a(href='/profile/id/' + event.organiser_id)
               | #{event.organiser_name}
+        tr
+          td= 'Likes'
+          td= event.likes
+
+      div(class='text-center')
+        - var liked = 'likes' in session && session.likes.includes(event._id.toString())
+
+        if(liked)
+          form(action='/events/unlike' method='POST')
+            input(type='hidden' name='event_id' value= event._id)
+            button(type='submit' class='btn btn-outline-danger') Unlike event
+
+        else
+          form(action='/events/like' method='POST')
+            input(type='hidden' name='event_id' value= event._id)
+            button(type='submit' class='btn btn-outline-success') Like event
 
   - var id = session.user_id.toString()
   if id == event.organiser_id
-    p(class='text-center')
+    div(class='text-center')
       a(href='/events/update/' + event._id)
         button(type='submit' class='btn btn-secondary') Edit event
