@@ -3,7 +3,7 @@ extends templates/template.pug
 block content
   div(id='event' class='container-fluid'
   style='background-image: linear-gradient(rgba(0,0,0,0), black),url("data:' + event.img_mime + ';base64,' + event.img_data + '")')
-    div(class='fixed-bottom')
+    div(style='bottom:0;position:absolute')
         h2(class='text-light')
           = event.event_name
 
