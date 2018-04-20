@@ -5,9 +5,28 @@ block content
   if(events)
     div(class='list-group')
       each event in events
-        a(href='/events/id/' + event._id
-        class='list')
-          p= event.event_name
+        div(class='event-item'
+          style='background-image: linear-gradient(rgba(0,0,0,0.5), black),url("data:' + event.img_mime + ';base64,' + event.img_data + '")')
+          div(class='container-fluid' style='bottom: 0; position: absolute')
+            div(class='row')
+              div(class='col-md-4')
+                a(href='/events/id/'+ event._id class='text-light')
+                  h3= event.event_name
+
+              div(class='col-md-2')
+                p(class='text-light')= event.category
+
+              div(class='col-md-2')
+                img(class='symbol' src='icons/location.svg')
+                p(class='text-light')= event.location
+
+              div(class='col-md-2')
+                img(class='symbol' src='icons/clock.svg')
+                p(class='text-light') #{moment(event.date).format("DD/MM/YY")}
+
+              div(class='col-md-2')
+                img(class='symbol' src='icons/thumb-up.svg')
+                p(class='text-light')= event.likes + ' likes'
 
   else
     p

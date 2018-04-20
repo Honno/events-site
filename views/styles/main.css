@@ -27,6 +27,21 @@ tr td:nth-child(2) {
    text-align: right;
 }
 
+div.event-item {
+    background-position: 50% 50%;
+    border-radius: 5px;
+    width: 100%;
+    min-height: 100px;
+    position: relative;
+    padding: 5px;
+}
+
+img.symbol {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+}
+
 div#event {
     background-position: 50% 50%;
     border-radius: 5px;
@@ -34,8 +49,4 @@ div#event {
     height: 300px;
     position: relative;
     margin-bottom: 15px;
-}
-
-div#event > h2 {
-    font-size: 40px;
 }

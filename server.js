@@ -45,8 +45,12 @@ exports.createServer = function () {
     // attatch defined routers
     routes(server);
 
+    /* other fancy stuff */
     // add momentjs functionality
     server.locals.moment = moment;
+
+    // local icon set
+    server.use('/icons', express.static(__dirname + '/views/svg'));
 
     /* return server */
     return server;
