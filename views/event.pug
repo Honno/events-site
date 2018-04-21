@@ -32,8 +32,6 @@ block content
           td= event.likes
 
       div(class='text-center')
-        - var liked = 'likes' in session && session.likes.includes(event._id.toString())
-
         if(liked)
           form(action='/events/unlike' method='POST')
             input(type='hidden' name='event_id' value= event._id)

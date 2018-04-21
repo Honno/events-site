@@ -27,8 +27,14 @@ router.get('/id/:id', function (req, res) {
                 session = null;
             }
 
+            var liked = false;
+            if ('likes' in req.session) {
+                liked = req.session.likes.indexOf(event._id.toString()) >= 0;
+            }
+
             res.render('event', {
                 event: event,
+                liked: liked,
                 session: req.session
             });
         }
@@ -201,7 +207,7 @@ router.post('/update', (req, res) => {
 });
 
 router.post('/like', (req, res) => {
-    if ('likes' in req.session && req.session.likes.includes(req.body.event_id)) {
+    if ('likes' in req.session && req.session.likes.indexOf(req.body.event_id) >= 0) {
         res.render('error', { error: "You have already liked this event" });
 
     } else {
@@ -227,7 +233,7 @@ router.post('/like', (req, res) => {
 });
 
 router.post('/unlike', (req, res) => {
-    if ('likes' in req.session && !(req.session.likes.includes(req.body.event_id) )) {
+    if ('likes' in req.session && req.session.likes.indexOf(req.body.event_id) < 0) {
         res.render('error', { error: "You have already unliked this event" });
 
     } else {
