@@ -34,11 +34,6 @@ exports.createServer = function () {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24
         },
-        store: new store({
-            uri: mongo_uri,
-            databaseName: 'admin',
-            collection: 'sessions'
-        })
     }));
 
     // allow data to be parsed
