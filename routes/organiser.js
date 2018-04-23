@@ -9,7 +9,6 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', function(req, res) {
-    console.log(req.body);
     if(req.body.email &&
        req.body.password &&
        req.body.display_name) {
@@ -89,14 +88,12 @@ router.get('/', (req, res) => {
 
 router.get('/id/:id', (req, res) => {
     var id = req.params.id;
-    console.log(id);
     if(id) {
         Organiser.findById(id, (err, organiser) => {
             if (err || !organiser) {
                 res.status(status.INTERNAL_SERVER_ERROR);
                 res.render('error', { error: err, session: req.session });
             } else {
-                console.log(organiser);
                 res.render('profile', {
                     name: organiser.display_name,
                     email: organiser.email,

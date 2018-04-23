@@ -8,7 +8,11 @@ var moment = require('moment');
 var routes = require('./routes');
 
 var mongoose = require('mongoose');
-var mongo_uri = 'mongodb://localhost';
+var mongo_uri;
+if(process.env.NODE_ENV === 'production')
+    mongo_uri = 'mongodb://admin:password@ds253959.mlab.com:53959/aston-events';
+else
+    mongo_uri = 'mongodb://localhost:27017/';
 mongoose.connect(mongo_uri);
 var store = require('connect-mongodb-session')(session);
 
