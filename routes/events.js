@@ -138,7 +138,7 @@ router.get('/update/:id', (req, res) => {
                     body: event.body,
                     location: event.location,
                     date: date.toISOString().substring(0, 10),
-                    time: date.getHours() + ':' + date.getMinutes(),
+                    time: date.toISOString().substring(11, 16),
                     category: event.category,
                 };
 
