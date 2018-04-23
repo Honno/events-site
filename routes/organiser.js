@@ -28,7 +28,7 @@ router.post('/register', function(req, res) {
                     session: req.session
                 });
             } else {
-                req.session.user_id = organiser._id;
+                req.session.user_id = organiser._id.toString();
                 req.session.name = organiser.display_name;
 
                 res.redirect('/profile/id/' + organiser._id);
@@ -58,7 +58,7 @@ router.post('/login', function(req, res) {
                     session: req.session
                 });
             } else {
-                req.session.user_id = organiser._id;
+                req.session.user_id = organiser._id.toString();
                 req.session.name = organiser.display_name;
 
                 res.redirect('/profile/id/' + organiser._id);

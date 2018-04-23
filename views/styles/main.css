@@ -34,12 +34,14 @@ div.event-item {
     min-height: 100px;
     position: relative;
     padding: 5px;
+    margin-bottom: 5px;
 }
 
 img.symbol {
-    height: 24px;
-    width: 24px;
-    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    float: left;
+    margin-right: 5px;
 }
 
 div#event {

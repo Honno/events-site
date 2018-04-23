@@ -6,6 +6,11 @@ var Organiser = require('../models/organiser.js');
 var Event = require('../models/event.js');
 
 router.get('/', (req, res) => {
+    if (!('sort' in req.session)) {
+        req.session.sort = {};
+    }
+    
+
     var events = [];
 
     var cursor = Event.find().cursor();

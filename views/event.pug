@@ -42,8 +42,7 @@ block content
             input(type='hidden' name='event_id' value= event._id)
             button(type='submit' class='btn btn-outline-success') Like event
 
-  - var id = session.user_id.toString()
-  if id == event.organiser_id
+  if session.user_id == event.organiser_id
     div(class='text-center')
       a(href='/events/update/' + event._id)
         button(type='submit' class='btn btn-secondary') Edit event

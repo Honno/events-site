@@ -1,6 +1,27 @@
 extends templates/template.pug
 
 block content
+  form(action='/' method='GET')
+    div(class='form-row')
+      div(class='form-group col-md-5')
+        label(style='margin-right: 15px') Categories
+        div(class='btn-group')
+          button(type="submit" class='btn btn-outline-info') All
+          button(type="submit" class='btn btn-outline-info') Sports
+          button(type="submit" class='btn btn-outline-info') Culture
+          button(type="submit" class='btn btn-outline-info') Misc
+
+      div(class='form-group col-md-5')
+        label(style='margin-right: 15px') Sort by
+        div(class='btn-group')
+          button(type="submit" class='btn btn-outline-info') Name
+          button(type="submit" class='btn btn-outline-info') Date
+          button(type="submit" class='btn btn-outline-info') Likes
+
+      div(class='form-group col-md-2')
+        button(type="submit" class='btn btn-outline-info') Old events
+
+
 
   if(events)
     div(class='list-group')
@@ -8,17 +29,17 @@ block content
         div(class='event-item'
           style='background-image: linear-gradient(rgba(0,0,0,0.5), black),url("data:' + event.img_mime + ';base64,' + event.img_data + '")')
           div(class='container-fluid' style='bottom: 0; position: absolute')
-            div(class='row')
+            div(class='row align-items-end')
               div(class='col-md-4')
                 a(href='/events/id/'+ event._id class='text-light')
                   h3= event.event_name
 
               div(class='col-md-2')
-                p(class='text-light')= event.category
+                p(class='text-light') #{event.category.charAt(0).toUpperCase() + event.category.slice(1)}
 
               div(class='col-md-2')
                 img(class='symbol' src='icons/location.svg')
-                p(class='text-light')= event.location
+                p(class='text-light align')= event.location
 
               div(class='col-md-2')
                 img(class='symbol' src='icons/clock.svg')
