@@ -2,21 +2,23 @@ extends templates/template.pug
 
 block content
   form(action='/' method='GET')
+    - var sort = session.sort
+
     div(class='form-row')
       div(class='form-group col-md-5')
         label(style='margin-right: 15px') Categories
         div(class='btn-group')
-          button(type="submit" class='btn btn-outline-info') All
-          button(type="submit" class='btn btn-outline-info') Sports
-          button(type="submit" class='btn btn-outline-info') Culture
-          button(type="submit" class='btn btn-outline-info') Misc
+          button(type="submit" class='btn btn-outline-info' name='category' value='all') All
+          button(type="submit" class='btn btn-outline-info' name='category' value='sports') Sports
+          button(type="submit" class='btn btn-outline-info' name='category' value='cultural') Culture
+          button(type="submit" class='btn btn-outline-info' name='category' value='other') Misc
 
       div(class='form-group col-md-5')
         label(style='margin-right: 15px') Sort by
         div(class='btn-group')
-          button(type="submit" class='btn btn-outline-info') Name
-          button(type="submit" class='btn btn-outline-info') Date
-          button(type="submit" class='btn btn-outline-info') Likes
+          button(type="submit" class='btn btn-outline-info' name='sort' value='name') Name
+          button(type="submit" class='btn btn-outline-info' name='sort' value='date') Date
+          button(type="submit" class='btn btn-outline-info' name='sort' value='likes') Likes
 
       div(class='form-group col-md-2')
         button(type="submit" class='btn btn-outline-info') Old events
