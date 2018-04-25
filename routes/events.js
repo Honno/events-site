@@ -162,6 +162,50 @@ router.get('/update/:id', (req, res) => {
 });
 
 router.post('/update', (req, res) => {
+    function update_image (callback) {
+        var search_query = { _id: req.body.event_id };
+        var update_query = { img_data: req.files.img.data.toString('base64'), img_mime: req.files.img.mimetype };
+
+        Event.update(search_query, update_query, (err, event) => {
+            if (err) {
+                res.render('update_event', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                callback();
+            }
+        });
+    }
+
+    function update_fields (callback) {
+        var data = {
+            event_name: req.body.name,
+            body: req.body.body,
+            location: req.body.location,
+            date: new Date(req.body.date + 'T' + req.body.time),
+            category: req.body.category
+        };
+
+        var query = { _id: req.body.event_id };
+
+        Event.update(query, data, (err, event) => {
+            if (err) {
+                res.render('update_event', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                callback();
+            }
+        });
+
+    }
+
+    function redirect () {
+        res.redirect('/events/id/' + req.body.event_id);
+    }
+
     if(req.session.user_id != req.body.organiser_id) {
         res.render('update_event', {
             error: "You are not permitted to update this event",
@@ -169,49 +213,15 @@ router.post('/update', (req, res) => {
         });
     } else {
         if ('img' in req.files) {
-            Event.update({ _id: req.body.event_id },
-                         { img_data: req.files.img.data.toString('base64'),
-                           img_mime: req.files.img.mimetype },
-                         (err, raw) => {
-                             if (err) {
-                                 res.render('update_event', {
-                                     error: err,
-                                     session: req.session
-                                 });
-                             } else {
-                                 res.redirect('/events/id/' + req.body.event_id);
-                             }
-                         });
+            update_image(redirect);
 
         } else if (req.body.name &&
                    req.body.body &&
                    req.body.location &&
                    req.body.date &&
                    req.body.time &&
-                   req.body.category)
-        {
-            var data = {
-                event_name: req.body.name,
-                body: req.body.body,
-                location: req.body.location,
-                date: new Date(req.body.date +
-                               'T' +
-                               req.body.time),
-                category: req.body.category
-            };
-
-            Event.update({ _id: req.body.event_id },
-                         data,
-                         (err, raw) => {
-                             if (err) {
-                                 res.render('update_event', {
-                                     error: err,
-                                     session: req.session
-                                 });
-                             } else {
-                                 res.redirect('/events/id/' + req.body.event_id);
-                             }
-                         });
+                   req.body.category) {
+            update_fields(redirect);
         }
     }
 });
