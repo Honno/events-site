@@ -9,7 +9,6 @@ var Event = require('../models/event.js');
 router.get('/id/:id', function (req, res) {
     Event.findById(req.params.id, (err, event) => {
         if (err || !event) {
-            res.status(status.INTERNAL_SERVER_ERROR);
             res.render('error', {
                 error: err,
                 session: req.session
@@ -236,19 +235,20 @@ router.post('/like', (req, res) => {
         }
         req.session.likes.push(req.body.event_id);
 
-        Event.findOneAndUpdate({ _id: req.body.event_id },
-                               { $inc: { likes: 1 } },
-                               (err, event) => {
-                                   if (err) {
-                                       res.render('error', {
-                                           error: err,
-                                           session: req.session
-                                       });
+        var search_query = { _id: req.body.event_id };
+        var update_query = { $inc: { likes: 1 } };
 
-                                   } else {
-                                       res.redirect('/events/id/' + req.body.event_id);
-                                   }
-                               });
+        Event.findOneAndUpdate(search_query, update_query, (err, event) => {
+            if (err) {
+                res.render('error', {
+                    error: err,
+                    session: req.session
+                });
+
+            } else {
+                res.redirect('/events/id/' + req.body.event_id);
+            }
+        });
     }
 });
 
@@ -260,20 +260,20 @@ router.post('/unlike', (req, res) => {
         if ('likes' in req.session) {
             req.session.likes.splice(req.session.likes.indexOf(req.body.event_id), 1);
         }
+        var search_query = { _id: req.body.event_id };
+        var update_query = { $inc: { likes: -1 } };
 
-        Event.findOneAndUpdate({ _id: req.body.event_id },
-                               { $inc: { likes: -1 } },
-                               (err, event) => {
-                                   if (err) {
-                                       res.render('error', {
-                                           error: err,
-                                           session: req.session
-                                       });
+        Event.findOneAndUpdate(search_query, update_query, (err, event) => {
+            if (err) {
+                res.render('error', {
+                    error: err,
+                    session: req.session
+                });
 
-                                   } else {
-                                       res.redirect('/events/id/' + req.body.event_id);
-                                   }
-                               });
+            } else {
+                res.redirect('/events/id/' + req.body.event_id);
+            }
+        });
     }
 });
 
