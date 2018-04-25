@@ -45,11 +45,10 @@ router.get('/', (req, res) => {
         if (!('sort' in view)) view.sort = null;
     }
 
-    if (!('old' in view)) view.old = false;
     if (req.query.old) {
-        if (req.query.old == 'on') {
-            view.old = true;
-        }
+        view.old = true;
+    } else {
+        view.old = false;
     }
 
     var events = [];
