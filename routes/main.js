@@ -5,19 +5,23 @@ var status = require('http-status');
 var Organiser = require('../models/organiser.js');
 var Event = require('../models/event.js');
 
-function sort_name (a, b) {
-    return b.event_name.toLowerCase() < a.event_name.toLowerCase();
-}
-
-function sort_date (a, b) {
-    return b.date - a.date;
-}
-
-function sort_likes (a, b) {
-    return b.likes - a.likes;
-}
-
 router.get('/', (req, res) => {
+    function sort_name (a, b) {
+        return b.event_name.toLowerCase() < a.event_name.toLowerCase();
+    }
+
+    function sort_date (a, b) {
+        return b.date - a.date;
+    }
+
+    function sort_likes (a, b) {
+        return b.likes - a.likes;
+    }
+
+    function filter_old(event) {
+        return event.date > Date.now();
+    }
+
     if (!('view' in req.session)) {
         req.session.view = {};
     }
@@ -41,6 +45,20 @@ router.get('/', (req, res) => {
         if (!('sort' in view)) view.sort = null;
     }
 
+    if (!('old' in view)) view.old = false;
+    if (req.query.old) {
+        switch (req.query.old) {
+        case 'y':
+            view.old = true;
+            break;
+        case 'n':
+            view.old = false;
+            break;
+        default:
+            view.old = !view.old;
+        }
+    }
+
     var events = [];
     var cursor = Event.find(query).cursor();
     cursor.on('data', (event) => {
@@ -58,6 +76,10 @@ router.get('/', (req, res) => {
         case 'likes':
             events.sort(sort_likes);
             break;
+        }
+
+        if (!view.old) {
+            events = events.filter(filter_old);
         }
 
         req.session.view = view;
