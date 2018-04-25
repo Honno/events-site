@@ -8,18 +8,18 @@ block content
       div(class='form-group form-inline col-md-4')
         label(class='mr-2') Show
         select(name='category' class='form-control')
-          option(value='all' submitted= view.category == null) All
-          option(value='sports' submitted= view.category == 'sports') Sporting
-          option(value='cultural' submitted= view.category == 'cultural') Cultural
-          option(value='other' submitted= view.category == 'other') Miscellaneous
+          option(value='all' selected= view.category == null) All
+          option(value='sports' selected= view.category == 'sports') Sporting
+          option(value='cultural' selected= view.category == 'cultural') Cultural
+          option(value='other' selected= view.category == 'other') Miscellaneous
         label(class='ml-2') Events
 
       div(class='form-group form-inline col-md-4')
         label(class='mr-2') Sort by
         select(name='sort' class='form-control')
-          option(value='date' submitted= view.sort == null || view.sort == 'date') Oldest to Newest
-          option(value='name' submitted= view.sort == 'name') Alphabetical
-          option(value='likes' submitted= view.sort == 'likes') No. of Likes
+          option(value='date' selected= view.sort == null || view.sort == 'date') Oldest to Newest
+          option(value='name' selected= view.sort == 'name') Alphabetical
+          option(value='likes' selected= view.sort == 'likes') No. of Likes
 
       div(class='form-group form-inline col-md-2')
         - var checked = null
