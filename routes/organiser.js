@@ -50,8 +50,7 @@ router.post('/login', function(req, res) {
     if(req.body.email &&
        req.body.password) {
         Organiser.auth(req.body.email, req.body.password, function(err, organiser) {
-            if (err) {
-                res.status(status.BAD_REQUEST);
+            if (err || !organiser) {
                 res.render('login', {
                     error: err,
                     session: req.session

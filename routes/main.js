@@ -47,15 +47,8 @@ router.get('/', (req, res) => {
 
     if (!('old' in view)) view.old = false;
     if (req.query.old) {
-        switch (req.query.old) {
-        case 'y':
+        if (req.query.old == 'on') {
             view.old = true;
-            break;
-        case 'n':
-            view.old = false;
-            break;
-        default:
-            view.old = !view.old;
         }
     }
 
