@@ -258,7 +258,7 @@ router.post('/unlike', (req, res) => {
 });
 
 router.post('/delete', (req, res) => {
-    if (req.body.event_id) {
+    function check_event_auth (callback) {
         Event.findById(req.body.event_id.toString(), (err, event) => {
             if (err | !event) {
                 res.render('error', {
@@ -267,28 +267,7 @@ router.post('/delete', (req, res) => {
                 });
             } else {
                 if (req.session.user_id.toString() == event.organiser_id) {
-                    Event.findByIdAndRemove(req.body.event_id,
-                                            (err, event) => {
-                                                if (err) {
-                                                    res.render('error', {
-                                                        error: err,
-                                                        session: req.session
-                                                    });
-                                                } else {
-                                                    Organiser.findOneAndUpdate({ _id: event.organiser_id },
-                                                                               { $pull: { events: { id: req.body.event_id } } },
-                                                                               (err, organiser) => {
-                                                                                   if (err) {
-                                                                                       res.render('error', {
-                                                                                           error: err,
-                                                                                           session: req.session
-                                                                                       });
-                                                                                   } else {
-                                                                                       res.render('index', { session: req.session });
-                                                                                   }
-                                                                               });
-                                                }
-                                            });
+                    callback();
                 } else {
                     res.render('error', {
                         error: "Not authorized to delete event",
@@ -297,12 +276,42 @@ router.post('/delete', (req, res) => {
                 }
             }
         });
-    } else {
-        res.render('error', {
-            error: "No event id provided",
-            session: req.session
+    }
+
+    function remove_event (callback) {
+        Event.findByIdAndRemove(req.body.event_id, (err, event) => {
+            if (err) {
+                res.render('error', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                callback(event);
+            }
         });
     }
+
+    function update_organiser (event, callback) {
+        var search_query = { _id: event.organiser_id };
+        var update_query = { $pull: { events: { id: req.body.event_id } } };
+
+        Organiser.findOneAndUpdate(search_query, update_query, (err, organiser) => {
+            if (err) {
+                res.render('error', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                callback();
+            }
+        });
+    }
+
+    check_event_auth(() => {
+        remove_event((event) => {
+            update_organiser(event, () => { res.redirect('/profile'); });
+        });
+    });
 });
 
 module.exports = router;
