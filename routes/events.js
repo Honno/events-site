@@ -45,7 +45,39 @@ router.get('/create', function (req, res) {
     res.render('create_event', { session: req.session });
 });
 
+
 router.post('/create', function (req, res) {
+    function create_event (callback) {
+        Event.create(data, function (err, event) {
+            if (err) {
+                res.render('create_event', { error: err, session: req.session });
+            } else {
+                callback(event);
+            }
+        });
+    }
+
+    function update_organiser (event, callback) {
+        var mini_event = {
+            id: event._id,
+            name: event.event_name
+        };
+
+        var update_query  = { $push: { events: mini_event} };
+
+        Organiser.findByIdAndUpdate(id, update_query, (err, organiser) => {
+            if (err) {
+                res.status(status.internal_server_error);
+                res.render('create_event', {
+                    error: err,
+                    session: req.session
+                });
+            } else {
+                callback();
+            }
+        });
+    }
+
     var id = req.session.user_id;
     if (id) {
         if(req.body.name &&
@@ -60,9 +92,7 @@ router.post('/create', function (req, res) {
                 event_name: req.body.name,
                 body: req.body.body,
                 location: req.body.location,
-                date: new Date(req.body.date +
-                               'T' +
-                               req.body.time),
+                date: new Date(req.body.date + 'T' + req.body.time),
                 category: req.body.category,
                 img_data: req.files.img.data.toString('base64'),
                 img_mime: req.files.img.mimetype,
@@ -70,33 +100,13 @@ router.post('/create', function (req, res) {
                 organiser_name: req.session.name
             };
 
-            Event.create(data, function (err, event) {
-                if (err) {
-                    res.status(status.INTERNAL_SERVER_ERROR);
-                    res.render('create_event', { error: err, session: req.session });
-                } else {
-                    var mini_event = {
-                        id: event._id,
-                        name: event.event_name
-                    };
-
-                    Organiser.findByIdAndUpdate(id, {
-                        $push: { events: mini_event}
-                    },
-(err, organiser) => {
-    if (err) {
-        res.status(status.internal_server_error);
-        res.render('create_event', {
-            error: err,
-            session: req.session
-        });
-    } else {
-        res.status(status.CREATED);
-        res.redirect('/events/id/' + event._id);
-    }
-});
-                }
+            create_event((event) => {
+                update_organiser(event, () => {
+                    res.status(status.CREATED);
+                    res.redirect('/events/id/' + event._id);
+                });
             });
+
         } else {
             res.status(status.BAD_REQUEST);
             res.render('create_event', {
