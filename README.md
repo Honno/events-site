@@ -10,10 +10,8 @@ Licensed with MIT :metal:
 
 ---
 
-## Footer of Shame
+## Footnotes of Shame
 
 Why did I use Pug and not a proper dynamic front end thingymaic? Because I'm an idiot.
 
-Are the organiser actions secure? No, as I was going to provide a secure session token but had time constraints—turns out web dev is hard.
-
-And yes, I failed to provide server-side vetting of POST requests in time too :(
+Are the organiser actions secure? No, as I was going to provide a secure session token but had time constraints—turns out web dev is hard. And yes, I failed to provide server-side vetting of POST requests in time too :(
