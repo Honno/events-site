@@ -2,7 +2,7 @@
 
 This is my coursework submission for my second year CS Internet Applications and Techniques module. We were tasked to create a website that could allow users to view student events. Students can register as an organiser to create and edit event pages that would be listed on the main page, as well as expand to an event page.
 
-I learnt to use `NodeJS` with `Express` because I'm a wanna-be hipster, with `MongoDB` (using `mongoose`) to handle the data store. And in seemingly modern web dev fashion, I learnt about the use of a bunch of npm packages to do the fancy stuff I wanted.
+I learnt to use `NodeJS` with `Express`, with `MongoDB` (using `mongoose`) to handle the data store (because I'm a wanna-be hipster). And in seemingly modern web dev fashion, I learnt about the use of a bunch of npm packages to do the fancy stuff I wanted.
 
 Licensed with MIT :metal:
 
